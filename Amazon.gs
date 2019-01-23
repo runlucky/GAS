@@ -1,9 +1,10 @@
+/// GmailからAmazonの荷物お届けメールを検索し、Googleカレンダーに登録する
+
 function createAmazonEvent() {
     GmailApp.search("is:unread from:(Amazon.co.jp) ご注文の確認").forEach(function(thread) {
         thread.getMessages().forEach(function(message) {
-            var range = Range(message);
-            if (range == null) return;
-            
+            if (!isShipMail(message)) return;
+            var range = Range(message);            
             CalendarApp.getDefaultCalendar().createEvent("アマゾン", range.from, range.to, {
                 description: description(message)              
             });
@@ -14,7 +15,6 @@ function createAmazonEvent() {
 
 function Range(message) { 
     var body = message.getPlainBody();
-    if (isKindle(body)) return null;
     var range = body.match(/\d{2}\/\d{2}\s\d{2}:\d{2}/g);
     return {
         from:toDate(message, range[0]),
@@ -22,8 +22,9 @@ function Range(message) {
     };
 }
 
-function isKindle(body) {
-    return !body.match(/お届け予定/);
+function isShipMail(message) {
+    var body = message.getPlainBody()
+    return body.match(/お届け予定/);
 }
 
 function toDate(message, date) { 
