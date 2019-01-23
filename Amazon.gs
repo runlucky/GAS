@@ -11,11 +11,10 @@ function createAmazonEvent() {
 }
 
 function Range(message) { 
-    var body = message.getPlainBody();
-    var range = body.match(/\d{2}\/\d{2}\s\d{2}:\d{2}/g);
+    var range = message.getPlainBody().match(/\d{2}\/\d{2}\s\d{2}:\d{2}/g);
     return {
-        from:toDate(message, range[0]),
-        to:toDate(message, range[1])
+        from: toDate(message, range[0]),
+        to: toDate(message, range[1])
     };
 }
 
@@ -26,7 +25,7 @@ function isShipMail(message) {
 
 function toDate(message, date) { 
     var [sMatched, Month, Day, Hour, Min] = date.match(/(\d{2})\/(\d{2})\s(\d{2}):(\d{2})/);
-    return  new Date(message.getDate().getFullYear(), Month - 1, Day, Hour, Min);
+    return new Date(message.getDate().getFullYear(), Month - 1, Day, Hour, Min);
 }
 
 function description(message) {
