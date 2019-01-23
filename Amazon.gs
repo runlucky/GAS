@@ -3,11 +3,8 @@
 function createAmazonEvent() {
     GmailApp.search("is:unread from:(Amazon.co.jp) ご注文の確認").forEach(function(thread) {
         thread.getMessages().forEach(function(message) {
-            if (!isShipMail(message)) return;
-            var range = Range(message);            
-            CalendarApp.getDefaultCalendar().createEvent("アマゾン", range.from, range.to, {
-                description: description(message)              
-            });
+            if (!isShipMail(message)) return;            
+            CreateEvent("アマゾン", Range(message), description(message));            
             message.markRead();
         });
     });
