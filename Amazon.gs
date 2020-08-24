@@ -29,12 +29,7 @@ function toDate(message, date) {
 }
 
 function description(message) {
-    return getTitle(message.getSubject()) + "\n" + getUrl(message.getPlainBody())
-}
-
-function getTitle(subject) {
-    var [reg, start,title] = subject.match(/(「)(.*)/);
-    return start + title;
+    return getUrl(message.getPlainBody())
 }
 
 function getUrl(body) {
